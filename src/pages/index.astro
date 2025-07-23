@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <script>
+    if (typeof window !== 'undefined') {
+      document.documentElement.style.scrollBehavior = 'smooth';
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const id = entry.target.getAttribute('id');
+            const link = document.querySelector(`nav a[href="#${id}"]`);
+            if (entry.isIntersecting) {
+              link?.classList.add('text-blue-400');
+            } else {
+              link?.classList.remove('text-blue-400');
+            }
+          });
+        },
+        {
+          threshold: 0.6,
+        }
+      );
+
+      document.querySelectorAll('section[id], #top').forEach((section) => {
+        observer.observe(section);
+      });
+    }
+  </script>
+  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/5 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full shadow-lg text-sm text-white flex gap-6 transition-all duration-300">
+    <a href="#top" class="hover:text-blue-400 transition">Home</a>
+    <a href="#work" class="hover:text-blue-400 transition">Work</a>
+    <a href="#projects" class="hover:text-blue-400 transition">Projects</a>
+    <a href="#skills" class="hover:text-blue-400 transition">Skills</a>
+    <a href="#education" class="hover:text-blue-400 transition">Education</a>
+    <a href="#about" class="hover:text-blue-400 transition">About</a>
+  </nav>
+  <div id="top" class="py-24">
+  <div class="text-center px-4">
+    <div class="mt-8 mb-16 flex justify-center">
+      <a href="#projects" class="glass-button text-sm px-6 py-2 rounded-full border border-white/20 text-white backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-white/10">
+        View Projects
+      </a>
+    </div>
+    <h1 class="text-4xl font-bold mb-4 text-white">hi, i’m maiia</h1>
+    <p class="text-lg mb-6 text-gray-200">
+      i build beautiful things with react, next.js & caffeine
+    </p>
+  </div>
+
+  <section id="work" class="scroll-mt-24 mt-16 max-w-2xl w-full px-4">
+    <h2 class="text-2xl font-semibold mb-6 text-white">Work Experience</h2>
+
+    <div class="space-y-10">
+      <div>
+        <h3 class="text-lg font-bold text-white">Frontend Developer · Transneft Technologies</h3>
+        <p class="text-sm text-gray-400">Sep 2024 – present · React, MobX, Konva, Quill</p>
+        <ul class="list-disc pl-5 text-sm mt-2 text-gray-300 space-y-1">
+          <li>Implemented a new rotation point feature for shape manipulation</li>
+          <li>Collaborated with backend to optimize API interactions</li>
+          <li>Maintained a modular, scalable codebase</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-bold text-white">Frontend Developer · AMMC Group</h3>
+        <p class="text-sm text-gray-400">Sep 2023 – Aug 2024 · Next.js, TS, Ant Design, Redux Saga</p>
+        <ul class="list-disc pl-5 text-sm mt-2 text-gray-300 space-y-1">
+          <li>Built dynamic multi-step form with Gosuslugi integration</li>
+          <li>Implemented WebSocket-based real-time notifications</li>
+          <li>Enhanced admin panel and reduced bundle size by 40%</li>
+          <li>Mentored junior devs and improved onboarding speed by 50%</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-bold text-white">Frontend Developer · Bars Group</h3>
+        <p class="text-sm text-gray-400">Jan 2023 – Aug 2023 · Next.js, TS, Ant Design, GraphQL</p>
+        <ul class="list-disc pl-5 text-sm mt-2 text-gray-300 space-y-1">
+          <li>Built editable table UI for Ministry of Finance app</li>
+          <li>Refactored legacy code, reducing tech debt by 30%</li>
+          <li>Advocated smaller PRs, reducing review time by 20%</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-bold text-white">Frontend Developer · Orion Innovation</h3>
+        <p class="text-sm text-gray-400">Mar 2021 – Jan 2023 · React, TS, GraphQL, Apollo, MobX</p>
+        <ul class="list-disc pl-5 text-sm mt-2 text-gray-300 space-y-1">
+          <li>Built real-time monitoring tools with WebSockets</li>
+          <li>Developed MFA and patient portal for Natera (US client)</li>
+          <li>Boosted test coverage from 40% to 70%</li>
+          <li>Integrated Storybook and optimized GraphQL queries</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="mt-16 max-w-2xl w-full px-4">
+    <h2 class="text-2xl font-semibold mb-6 text-white">Projects</h2>
+    <ul class="list-disc pl-5 text-sm text-gray-300 space-y-2">
+      <li><span class="text-white font-medium">CV site</span>: built with Astro, Tailwind, custom animation</li>
+      <li><span class="text-white font-medium">Konva editor</span>: built interactive canvas with custom shapes, rotation logic, guides, grouping</li>
+      <li><span class="text-white font-medium">AI assistant</span>: developed tools and UI for LLM-based Q&A interface</li>
+    </ul>
+  </section>
+
+  <section id="skills" class="mt-16 max-w-2xl w-full px-4">
+    <h2 class="text-2xl font-semibold mb-6 text-white">Skills</h2>
+    <p class="text-gray-300 text-sm">
+      React, TypeScript, Next.js, Astro, Tailwind, MobX, Redux, Zustand, GraphQL, REST, Konva, Quill, Vite, Storybook,
+      WebSockets, CI/CD, testing, design systems
+    </p>
+  </section>
+
+  <section id="education" class="mt-16 max-w-2xl w-full px-4">
+    <h2 class="text-2xl font-semibold mb-6 text-white">Education</h2>
+    <ul class="list-disc pl-5 text-sm text-gray-300 space-y-2">
+      <li><span class="text-white font-medium">HSE University</span> — Science, Technology and Innovation Management and Policy, 2008–2012</li>
+      <li><span class="text-white font-medium">Orion Innovation Learning Center</span> — Frontend Development, 2020–2021</li>
+      <li><span class="text-white font-medium">GeekBrains</span> — Frontend Development, 2020–2021</li>
+    </ul>
+  </section>
+
+  <section class="mt-16 max-w-2xl w-full px-4">
+    <h2 class="text-2xl font-semibold mb-6 text-white">Languages</h2>
+    <ul class="list-disc pl-5 text-sm text-gray-300 space-y-1">
+      <li>Russian — native</li>
+      <li>English — upper-intermediate (B2)</li>
+      <li>Portuguese — beginner</li>
+    </ul>
+  </section>
+
+  <section id="about" class="mt-16 max-w-2xl w-full px-4">
+    <h2 class="text-2xl font-semibold mb-6 text-white">About My Aesthetic</h2>
+    <p class="text-sm text-gray-300">
+      I’m drawn to visual harmony — from typography to layout to subtle interaction. I love photography, vintage textures,
+      light gradients and contrast, and building interfaces that feel tactile and expressive. I believe good design is in the
+      details, and I enjoy blending frontend craft with a sense of story and atmosphere.
+    </p>
+  </section>
+
+   <section id="contact" class="mt-20 max-w-2xl w-full px-4 pb-20">
+    <h2 class="text-2xl font-semibold mb-6 text-white">Contact</h2>
+    <p class="text-sm text-gray-300 mb-2">
+      Let's connect! You can reach me via email or check out my profiles:
+    </p>
+    <ul class="text-sm text-blue-400 space-y-2">
+      <li><a href="mailto:maaya.alexeeva@gmail.com" class="hover:underline">maaya.alexeeva@gmail.com</a></li>
+      <li><a href="https://github.com/mayyaalekseeva" target="_blank" class="hover:underline">GitHub: mayyaalekseeva</a></li>
+      <li><a href="https://www.linkedin.com/in/maiia-alekseeva" target="_blank" class="hover:underline">LinkedIn: maiia-alekseeva</a></li>
+    </ul>
+  </section>
+  </div>
+</BaseLayout>
