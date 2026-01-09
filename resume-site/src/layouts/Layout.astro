@@ -1,0 +1,157 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Personal portfolio and resume website" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>
+
+<script is:inline>
+  // Cursor glow effect - similar to brittanychiang.com
+  (function() {
+    function initCursor() {
+      // Only add effect on desktop
+      if (window.innerWidth < 768) {
+        return;
+      }
+
+      // Check if body exists
+      if (!document.body) {
+        setTimeout(initCursor, 100);
+        return;
+      }
+
+      const cursor = document.createElement('div');
+      cursor.className = 'cursor-glow';
+      document.body.appendChild(cursor);
+
+      // Initialize cursor position at center of viewport
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let cursorX = mouseX;
+      let cursorY = mouseY;
+      
+      // Set initial position
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function animateCursor() {
+        // Smooth following effect with easing - higher value = faster response
+        const dx = mouseX - cursorX;
+        const dy = mouseY - cursorY;
+        cursorX += dx * 0.4;
+        cursorY += dy * 0.4;
+        
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        
+        requestAnimationFrame(animateCursor);
+      }
+
+      animateCursor();
+
+      // Add hover effect on interactive elements
+      const interactiveElements = document.querySelectorAll('a, button, .btn, .card, .social-link, .project-card');
+      
+      interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.classList.add('cursor-hover');
+        });
+        
+        el.addEventListener('mouseleave', () => {
+          cursor.classList.remove('cursor-hover');
+        });
+      });
+    }
+
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCursor);
+    } else {
+      // DOM already loaded - use setTimeout to ensure body exists
+      setTimeout(initCursor, 100);
+    }
+  })();
+</script>
+
+<style is:global>
+  .cursor-glow {
+    position: fixed;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at center,
+      rgba(99, 102, 241, 0.12) 0%,
+      rgba(99, 102, 241, 0.06) 15%,
+      rgba(99, 102, 241, 0.03) 30%,
+      rgba(99, 102, 241, 0.01) 50%,
+      transparent 70%
+    );
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: width 0.3s ease, height 0.3s ease;
+    will-change: transform, width, height;
+    opacity: 1;
+    left: 0;
+    top: 0;
+    filter: blur(40px);
+  }
+
+  .cursor-glow.cursor-hover {
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(
+      circle at center,
+      rgba(129, 140, 248, 0.15) 0%,
+      rgba(129, 140, 248, 0.08) 15%,
+      rgba(129, 140, 248, 0.04) 30%,
+      rgba(129, 140, 248, 0.02) 50%,
+      transparent 70%
+    );
+    filter: blur(50px);
+  }
+
+  /* Hide on mobile */
+  @media (max-width: 767px) {
+    .cursor-glow {
+      display: none !important;
+    }
+  }
+</style>
+
+
