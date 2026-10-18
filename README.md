@@ -1,47 +1,32 @@
-# Astro Starter Kit: Minimal
+# maiia-alexeeva.space
+
+Personal site and CV of Maiia Alekseeva, frontend engineer in Lisbon.
+
+Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com) v4. Static output, no UI framework, a few small scripts for the interactive bits. Deployed on Vercel.
+
+## Development
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # static site in ./dist
+npm run preview  # serve the build locally
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+## Where things live
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Path | What |
+| :--- | :--- |
+| `src/data/cv.ts` | All the content: profile, experience, coffee years, projects, skills |
+| `src/pages/index.astro` | The page layout |
+| `src/components/` | Nav (with theme toggle), CV download menu, copy-email, social links, cursor glow |
+| `src/styles/global.css` | Colour palette and roles for both themes, shared component styles |
+| `src/lib/duration.ts` | Job lengths and the overall total, calculated from start/end months |
+| `public/` | CV PDFs (EN, RU) and favicon |
 
-## 🚀 Project Structure
+## Updating
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Content:** edit `src/data/cv.ts`. When changing jobs, give the current one an `end: 'YYYY-MM'` and add the new one with its `start`; durations update automatically.
+- **CV files:** replace `public/Maiia_Alekseeva_CV.pdf` and `public/Maiia_Alekseeva_CV_RU.pdf`, keeping the names so the links keep working.
+- **Colours:** change the palette in the `@theme` block of `global.css`. Components use role tokens (`ink`, `accent`, `brand`, `surface`, `feature`, ...), so both themes follow.
+- **"Open to new roles" badge:** `profile.openToWork` in `src/data/cv.ts`.

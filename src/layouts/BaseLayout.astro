@@ -1,18 +1,75 @@
 ---
-import MouseLight from '../components/MouseLight';
+import MouseLight from '../components/MouseLight.astro';
 import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Maiia Alekseeva — Frontend Engineer',
+  description = 'Frontend engineer in Lisbon with 5+ years of building complex, data-heavy React and TypeScript apps.',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Maiia — Frontend Developer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {/* Browser UI colour; the theme scripts swap between the paper colours below */}
+    <meta name="theme-color" id="theme-color" content="#ede3d8" data-light="#ede3d8" data-dark="#1d1512" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" />
+
+    <script is:inline>
+      // Runs before paint: saved choice wins, otherwise follow the system theme.
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        let saved = null;
+        try {
+          saved = localStorage.getItem('theme');
+        } catch {}
+        const theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        root.dataset.theme = theme;
+        const meta = document.getElementById('theme-color');
+        if (meta) meta.content = meta.dataset[theme];
+      })();
+    </script>
   </head>
-  <body class="bg-gray-700">
-    <MouseLight client:load />
-    <main class="min-h-screen flex flex-col items-center justify-center px-4">
-       <slot />
-    </main>
+  <body>
+    <MouseLight />
+    <slot />
+
+    <script>
+      // Fade sections in as they scroll into view (see .reveal in global.css)
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          });
+        },
+        { rootMargin: '0px 0px -8% 0px' }
+      );
+
+      document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+    </script>
   </body>
 </html>

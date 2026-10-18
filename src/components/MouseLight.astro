@@ -1,0 +1,24 @@
+---
+// Soft glow that follows the cursor; styled by .mouse-light in global.css
+---
+<div class="mouse-light pointer-events-none fixed inset-0 -z-10" aria-hidden="true"></div>
+
+<script>
+  const light = document.querySelector<HTMLElement>('.mouse-light');
+
+  // Touch screens have no cursor to follow
+  if (light && matchMedia('(pointer: fine)').matches) {
+    let frame = 0;
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          light.style.setProperty('--glow-x', `${e.clientX}px`);
+          light.style.setProperty('--glow-y', `${e.clientY}px`);
+        });
+      },
+      { passive: true }
+    );
+  }
+</script>
