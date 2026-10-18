@@ -1,157 +1,304 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import CvMenu from '../components/CvMenu.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import CopyEmail from '../components/CopyEmail.astro';
+import { profile, experience, stats, coffee, projects, skills, education, languages } from '../data/cv';
+import { formatMonths, monthsIn, totalMonths } from '../lib/duration';
+
+const [featured] = projects;
+const [degree, ...courses] = education;
 ---
 
 <BaseLayout>
-  <script>
-    if (typeof window !== 'undefined') {
-      document.documentElement.style.scrollBehavior = 'smooth';
+  <Nav />
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            const id = entry.target.getAttribute('id');
-            const link = document.querySelector(`nav a[href="#${id}"]`);
-            if (entry.isIntersecting) {
-              link?.classList.add('text-blue-400');
-            } else {
-              link?.classList.remove('text-blue-400');
-            }
-          });
-        },
-        {
-          threshold: 0.6,
-        }
-      );
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <header id="top" class="pt-32 pb-14 sm:pt-40 sm:pb-20">
+      {profile.openToWork && (
+        <p class="reveal mb-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-sm text-muted">
+          <span class="relative flex size-2">
+            <span class="absolute inline-flex size-full animate-ping rounded-full bg-pop"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-pop"></span>
+          </span>
+          open to new roles
+        </p>
+      )}
 
-      document.querySelectorAll('section[id], #top').forEach((section) => {
-        observer.observe(section);
-      });
-    }
-  </script>
-  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/5 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full shadow-lg text-sm text-white flex gap-6 transition-all duration-300">
-    <a href="#top" class="hover:text-blue-400 transition">Home</a>
-    <a href="#work" class="hover:text-blue-400 transition">Work</a>
-    <a href="#projects" class="hover:text-blue-400 transition">Projects</a>
-    <a href="#skills" class="hover:text-blue-400 transition">Skills</a>
-    <a href="#education" class="hover:text-blue-400 transition">Education</a>
-    <a href="#about" class="hover:text-blue-400 transition">About</a>
-  </nav>
-  <div id="top" class="py-24">
-  <div class="text-center px-4">
-    <div class="mt-8 mb-16 flex justify-center">
-      <a href="#projects" class="glass-button text-sm px-6 py-2 rounded-full border border-white/20 text-white backdrop-blur-md shadow-lg transition-all duration-300 hover:bg-white/10">
-        View Projects
-      </a>
-    </div>
-    <h1 class="text-4xl font-bold mb-4 text-white">hi, i’m maiia</h1>
-    <p class="text-lg mb-6 text-gray-200">
-      i build beautiful things with react, next.js & caffeine
-    </p>
-  </div>
+      <h1 class="reveal text-[clamp(3.75rem,14vw,10.5rem)] leading-[0.88] font-semibold tracking-[-0.055em]">
+        hi, i’m maiia<span class="text-accent">.</span>
+      </h1>
 
-  <section id="work" class="scroll-mt-24 mt-16 max-w-2xl w-full px-4">
-    <h2 class="text-2xl font-semibold mb-6 text-white">Work Experience</h2>
+      <div class="mt-10 grid gap-8 lg:grid-cols-12 lg:items-end">
+        <p class="reveal text-xl leading-snug text-balance text-ink/80 sm:text-2xl lg:col-span-7">
+          frontend engineer with 5+ years of turning complex, data-heavy apps into interfaces people
+          <span class="marker text-accent">actually enjoy</span>. react, typescript &amp; a lot of coffee.
+        </p>
+        <div class="reveal flex flex-wrap items-center gap-3 lg:col-span-5 lg:justify-end">
+          <CvMenu />
+          <CopyEmail variant="button" />
+          <SocialLinks />
+        </div>
+      </div>
+    </header>
 
-    <div class="space-y-10">
-      <div>
-        <h3 class="text-lg font-bold text-white">Frontend Developer · Transneft Technologies</h3>
-        <p class="text-sm text-gray-400">Sep 2024 – present · React, MobX, Konva, Quill</p>
-        <ul class="list-disc pl-5 text-sm mt-2 text-gray-300 space-y-1">
-          <li>Implemented a new rotation point feature for shape manipulation</li>
-          <li>Collaborated with backend to optimize API interactions</li>
-          <li>Maintained a modular, scalable codebase</li>
-        </ul>
+    <section id="about" class="scroll-mt-24" aria-label="At a glance">
+      <div class="grid gap-3 sm:gap-4 md:grid-cols-6 lg:grid-cols-12">
+        <a
+          id="projects"
+          href={featured.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="reveal tile group flex min-h-[22rem] flex-col justify-between !border-feature !bg-feature text-on-feature hover:-translate-y-1 md:col-span-6 lg:col-span-7 lg:row-span-2"
+        >
+          <div class="flex items-start justify-between gap-4">
+            <p class="inline-flex items-center gap-2 rounded-full bg-brand px-3 py-1 text-sm text-on-brand">
+              <span class="size-1.5 rounded-full bg-on-brand/80" aria-hidden="true"></span>
+              {featured.tag}
+            </p>
+            <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-on-feature text-lg text-baby-600 transition duration-300 group-hover:rotate-45 group-hover:bg-brand group-hover:text-on-brand" aria-hidden="true">↗</span>
+          </div>
+          <div>
+            <h2 class="text-4xl font-semibold tracking-tight sm:text-5xl">{featured.name}</h2>
+            <p class="mt-4 max-w-xl leading-relaxed text-on-feature/90">{featured.description}</p>
+            <ul class="mt-6 flex flex-wrap gap-2">
+              {featured.stack.map((item) => <li class="rounded-full bg-on-feature/12 px-3 py-1 text-sm text-on-feature/90">{item}</li>)}
+            </ul>
+          </div>
+        </a>
+
+        <div class="reveal tile flex flex-col justify-between gap-6 md:col-span-3 lg:col-span-5">
+          <p class="tile-label">based in</p>
+          <div>
+            <p class="text-3xl font-semibold tracking-tight">{profile.location}</p>
+            <p class="mt-1 text-ink/80">the city i changed careers for</p>
+            <p class="mt-3 text-sm text-muted">
+              <time id="local-time" class="text-ink tabular-nums">--:--</time> local time · working in european time zones
+            </p>
+          </div>
+        </div>
+
+        <div class="reveal tile flex flex-col justify-between gap-6 md:col-span-3 lg:col-span-5">
+          <p class="tile-label">in numbers</p>
+          <dl class="grid grid-cols-3 gap-4">
+            {stats.map((stat) => (
+              <div class="flex flex-col gap-1">
+                <dt class="order-last text-xs leading-snug text-muted sm:text-sm">{stat.label}</dt>
+                <dd class="text-3xl font-semibold tracking-tight sm:text-4xl">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div id="skills" class="reveal tile md:col-span-6 lg:col-span-7">
+          <p class="tile-label mb-5">toolbox</p>
+          <dl class="grid gap-5 sm:grid-cols-2">
+            {skills.map((skill) => (
+              <div>
+                <dt class="mb-2 text-sm font-medium">{skill.group}</dt>
+                <dd class="flex flex-wrap gap-1.5">
+                  {skill.items.map((item) => <span class="chip">{item}</span>)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div class="reveal tile flex flex-col justify-between gap-8 md:col-span-6 lg:col-span-5">
+          <div>
+            <p class="tile-label mb-5">about me</p>
+            <p class="text-lg leading-relaxed text-ink/85">
+              I’ve always been more interested in building things than just talking about ideas. From running coffee
+              businesses to developing software, I’ve learned to think beyond my own role — about the people, the
+              product, and what makes it worth using. I’m curious by nature, particular about details, and happiest
+              when I get to figure things out from scratch.
+            </p>
+          </div>
+          <ul class="flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-5 text-sm">
+            {languages.map((language) => (
+              <li><span class="font-medium">{language.name}</span> <span class="text-muted">{language.level}</span></li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="reveal tile grid gap-8 md:col-span-6 lg:col-span-12 lg:grid-cols-12">
+          <div class="lg:col-span-8">
+            <p class="tile-label mb-5">business mindset</p>
+            <p class="text-2xl leading-snug font-semibold tracking-tight text-balance sm:text-3xl">
+              a <span class="marker text-accent">management degree</span> and my own coffee businesses taught me to
+              think about users, costs and goals, not only code.
+            </p>
+            <p class="mt-5 text-ink/80">
+              <span class="font-medium text-ink">{degree.place}</span> · {degree.detail} · {degree.years}
+            </p>
+          </div>
+          <div class="lg:col-span-4 lg:border-l lg:border-line lg:pl-8">
+            <p class="tile-label mb-5">frontend training</p>
+            <ul class="space-y-4">
+              {courses.map((item) => (
+                <li>
+                  <p class="font-medium">{item.place}</p>
+                  <p class="mt-1 text-sm text-muted">{item.detail} · {item.years}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="scroll-mt-24 pt-24 sm:pt-32">
+      <div class="reveal mb-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+        <h2 class="text-4xl font-semibold tracking-tight sm:text-6xl">
+          where i’ve worked<span class="text-accent">.</span>
+        </h2>
+        <p class="text-muted sm:pb-2">
+          <span class="text-2xl font-semibold tracking-tight text-ink tabular-nums sm:text-3xl" data-total-duration>
+            {formatMonths(totalMonths(experience))}
+          </span>
+          in frontend overall
+        </p>
       </div>
 
-      <div>
-        <h3 class="text-lg font-bold text-white">Frontend Developer · AMMC Group</h3>
-        <p class="text-sm text-gray-400">Sep 2023 – Aug 2024 · Next.js, TS, Ant Design, Redux Saga</p>
-        <ul class="list-disc pl-5 text-sm mt-2 text-gray-300 space-y-1">
-          <li>Built dynamic multi-step form with Gosuslugi integration</li>
-          <li>Implemented WebSocket-based real-time notifications</li>
-          <li>Enhanced admin panel and reduced bundle size by 40%</li>
-          <li>Mentored junior devs and improved onboarding speed by 50%</li>
-        </ul>
+      <div class="border-b border-line">
+        {experience.map((job, i) => (
+          <details class="row reveal group border-t border-line" open={i === 0}>
+            <summary class="grid cursor-pointer list-none grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 py-6 [&::-webkit-details-marker]:hidden md:grid-cols-[11rem_1fr_auto] lg:grid-cols-[11rem_1fr_1fr_auto]">
+              <span class="col-span-2 text-sm text-muted tabular-nums md:col-span-1">
+                {job.period}
+                <span class="block text-ink/80" data-duration data-start={job.start} data-end={job.end}>
+                  {formatMonths(monthsIn(job))}
+                </span>
+              </span>
+              <span>
+                <span class="block text-2xl font-semibold tracking-tight transition group-hover:text-accent sm:text-3xl">{job.company}</span>
+                <span class="text-sm text-muted">{job.role}</span>
+              </span>
+              <span class="hidden text-sm text-muted lg:block">{job.stack.join(' · ')}</span>
+              <span class="inline-flex size-10 items-center justify-center rounded-full border border-line text-ink/70 transition duration-300 group-open:border-accent group-open:text-accent group-hover:border-accent" aria-hidden="true">
+                <svg class="size-4 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </summary>
+            <div class="pb-8 md:pl-[calc(11rem+1.5rem)]">
+              <ul class="max-w-2xl space-y-2.5 leading-relaxed text-ink/85">
+                {job.points.map((point) => (
+                  <li class="flex gap-3">
+                    <span class="mt-[0.8em] h-px w-3 shrink-0 bg-accent" aria-hidden="true"></span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="mt-4 text-sm text-muted lg:hidden">{job.stack.join(' · ')}</p>
+            </div>
+          </details>
+        ))}
       </div>
+    </section>
 
-      <div>
-        <h3 class="text-lg font-bold text-white">Frontend Developer · Bars Group</h3>
-        <p class="text-sm text-gray-400">Jan 2023 – Aug 2023 · Next.js, TS, Ant Design, GraphQL</p>
-        <ul class="list-disc pl-5 text-sm mt-2 text-gray-300 space-y-1">
-          <li>Built editable table UI for Ministry of Finance app</li>
-          <li>Refactored legacy code, reducing tech debt by 30%</li>
-          <li>Advocated smaller PRs, reducing review time by 20%</li>
-        </ul>
+    <section id="coffee" class="scroll-mt-24 pt-24 sm:pt-32">
+      <h2 class="reveal mb-10 text-4xl font-semibold tracking-tight sm:text-6xl">
+        before code: specialty coffee<span class="text-accent">.</span>
+      </h2>
+
+      <div class="grid gap-3 sm:gap-4 lg:grid-cols-12">
+        <div class="reveal tile flex flex-col gap-5 lg:col-span-5">
+          <p class="text-lg leading-relaxed text-ink/85">
+            Before frontend, I spent <span class="marker font-medium text-accent">10+ years in specialty coffee</span>,
+            from behind the bar to founding my own coffee shop and launching a roastery. Running a business taught me
+            to think strategically: who it’s for, what it costs and how it pays off. Coffee taught me to obsess over the
+            details people feel but rarely notice.
+          </p>
+          <p class="text-lg leading-relaxed text-ink/85">
+            I’d dreamed of living in <span class="marker">Lisbon</span> for years, and switching to frontend was how I
+            made it happen.
+          </p>
+          <ul class="mt-3 space-y-4 border-t border-line pt-6">
+            {coffee.roles.map((role) => (
+              <li>
+                <p class="font-medium">{role.title}</p>
+                <p class="text-sm text-muted">{role.detail}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="grid gap-3 sm:gap-4 lg:col-span-7">
+          {coffee.ventures.map((venture) => (
+            <a
+              href={venture.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="reveal tile group flex flex-col justify-between gap-10 hover:-translate-y-1 hover:border-ink/20"
+            >
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-sm text-accent">{venture.role}</p>
+                <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-surface text-lg text-ink transition duration-300 group-hover:rotate-45 group-hover:bg-brand group-hover:text-on-brand" aria-hidden="true">↗</span>
+              </div>
+              <div>
+                <h3 class="text-3xl font-semibold tracking-tight sm:text-4xl">{venture.name}</h3>
+                <p class="mt-3 max-w-xl leading-relaxed text-ink/80">{venture.description}</p>
+                {venture.funFact && (
+                  <p class="mt-5 inline-flex flex-wrap items-baseline gap-x-2 rounded-2xl bg-surface px-4 py-2.5 text-sm">
+                    <span class="font-medium text-accent">fun fact</span>
+                    <span class="text-ink/85">{venture.funFact}</span>
+                  </p>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
+    </section>
 
-      <div>
-        <h3 class="text-lg font-bold text-white">Frontend Developer · Orion Innovation</h3>
-        <p class="text-sm text-gray-400">Mar 2021 – Jan 2023 · React, TS, GraphQL, Apollo, MobX</p>
-        <ul class="list-disc pl-5 text-sm mt-2 text-gray-300 space-y-1">
-          <li>Built real-time monitoring tools with WebSockets</li>
-          <li>Developed MFA and patient portal for Natera (US client)</li>
-          <li>Boosted test coverage from 40% to 70%</li>
-          <li>Integrated Storybook and optimized GraphQL queries</li>
-        </ul>
+    <section id="contact" class="scroll-mt-24 pt-24 pb-10 sm:pt-32">
+      <div class="reveal tile !border-feature !bg-feature px-6 py-12 text-on-feature sm:px-12 sm:py-16">
+        <p class="text-sm text-on-feature/85">got a role or a project in mind?</p>
+        <h2 class="mt-3 text-5xl font-semibold tracking-tight sm:text-7xl">let’s talk<span class="text-feature-accent">.</span></h2>
+        <div class="mt-8">
+          <CopyEmail
+            class="text-xl break-all text-feature-accent underline decoration-feature-accent/40 underline-offset-4 transition hover:decoration-feature-accent sm:text-3xl"
+            hintClass="text-on-feature/85 decoration-on-feature/30 hover:decoration-on-feature"
+          />
+        </div>
+        <div class="mt-10 flex flex-wrap items-center gap-3">
+          <CvMenu up />
+          <SocialLinks onFeature />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <section id="projects" class="mt-16 max-w-2xl w-full px-4">
-    <h2 class="text-2xl font-semibold mb-6 text-white">Projects</h2>
-    <ul class="list-disc pl-5 text-sm text-gray-300 space-y-2">
-      <li><span class="text-white font-medium">CV site</span>: built with Astro, Tailwind, custom animation</li>
-      <li><span class="text-white font-medium">Konva editor</span>: built interactive canvas with custom shapes, rotation logic, guides, grouping</li>
-      <li><span class="text-white font-medium">AI assistant</span>: developed tools and UI for LLM-based Q&A interface</li>
-    </ul>
-  </section>
-
-  <section id="skills" class="mt-16 max-w-2xl w-full px-4">
-    <h2 class="text-2xl font-semibold mb-6 text-white">Skills</h2>
-    <p class="text-gray-300 text-sm">
-      React, TypeScript, Next.js, Astro, Tailwind, MobX, Redux, Zustand, GraphQL, REST, Konva, Quill, Vite, Storybook,
-      WebSockets, CI/CD, testing, design systems
-    </p>
-  </section>
-
-  <section id="education" class="mt-16 max-w-2xl w-full px-4">
-    <h2 class="text-2xl font-semibold mb-6 text-white">Education</h2>
-    <ul class="list-disc pl-5 text-sm text-gray-300 space-y-2">
-      <li><span class="text-white font-medium">HSE University</span> — Science, Technology and Innovation Management and Policy, 2008–2012</li>
-      <li><span class="text-white font-medium">Orion Innovation Learning Center</span> — Frontend Development, 2020–2021</li>
-      <li><span class="text-white font-medium">GeekBrains</span> — Frontend Development, 2020–2021</li>
-    </ul>
-  </section>
-
-  <section class="mt-16 max-w-2xl w-full px-4">
-    <h2 class="text-2xl font-semibold mb-6 text-white">Languages</h2>
-    <ul class="list-disc pl-5 text-sm text-gray-300 space-y-1">
-      <li>Russian — native</li>
-      <li>English — upper-intermediate (B2)</li>
-      <li>Portuguese — beginner</li>
-    </ul>
-  </section>
-
-  <section id="about" class="mt-16 max-w-2xl w-full px-4">
-    <h2 class="text-2xl font-semibold mb-6 text-white">About My Aesthetic</h2>
-    <p class="text-sm text-gray-300">
-      I’m drawn to visual harmony — from typography to layout to subtle interaction. I love photography, vintage textures,
-      light gradients and contrast, and building interfaces that feel tactile and expressive. I believe good design is in the
-      details, and I enjoy blending frontend craft with a sense of story and atmosphere.
-    </p>
-  </section>
-
-   <section id="contact" class="mt-20 max-w-2xl w-full px-4 pb-20">
-    <h2 class="text-2xl font-semibold mb-6 text-white">Contact</h2>
-    <p class="text-sm text-gray-300 mb-2">
-      Let's connect! You can reach me via email or check out my profiles:
-    </p>
-    <ul class="text-sm text-blue-400 space-y-2">
-      <li><a href="mailto:maaya.alexeeva@gmail.com" class="hover:underline">maaya.alexeeva@gmail.com</a></li>
-      <li><a href="https://github.com/mayyaalekseeva" target="_blank" class="hover:underline">GitHub: mayyaalekseeva</a></li>
-      <li><a href="https://www.linkedin.com/in/maiia-alekseeva" target="_blank" class="hover:underline">LinkedIn: maiia-alekseeva</a></li>
-    </ul>
-  </section>
-  </div>
+  <footer class="mx-auto flex max-w-6xl flex-wrap justify-between gap-2 px-4 pb-10 text-sm text-muted sm:px-6 lg:px-8">
+    <p>© {new Date().getFullYear()} {profile.name}</p>
+    <p>made with astro in lisbon</p>
+  </footer>
 </BaseLayout>
+
+<script>
+  import { formatMonths, monthsIn, totalMonths, type Period } from '../lib/duration';
+
+  // The page is static, so refresh ongoing durations with today's date.
+  const periods: Period[] = [];
+  document.querySelectorAll<HTMLElement>('[data-duration]').forEach((el) => {
+    const period = { start: el.dataset.start!, end: el.dataset.end };
+    periods.push(period);
+    el.textContent = formatMonths(monthsIn(period));
+  });
+  const totalEl = document.querySelector('[data-total-duration]');
+  if (totalEl && periods.length) totalEl.textContent = formatMonths(totalMonths(periods));
+
+  const timeEl = document.getElementById('local-time');
+  if (timeEl) {
+    const format = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Lisbon', hour: '2-digit', minute: '2-digit' });
+    const tick = () => {
+      const now = new Date();
+      timeEl.textContent = format.format(now);
+      timeEl.setAttribute('datetime', now.toISOString());
+    };
+    tick();
+    setInterval(tick, 30_000);
+  }
+</script>

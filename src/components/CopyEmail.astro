@@ -1,0 +1,95 @@
+---
+// Click copies the email (with a "copied" confirmation); mailto stays as a secondary option.
+// The address is never written out in one piece, so simple scrapers don't pick it up:
+// the "@" comes from CSS, and the script assembles it from data attributes.
+import { profile } from '../data/cv';
+
+interface Props {
+  // "button" is a compact button (hero), "link" shows the address itself (contact)
+  variant?: 'button' | 'link';
+  label?: string;
+  class?: string;
+  hintClass?: string;
+}
+
+const { variant = 'link', label = 'say hi', class: className, hintClass } = Astro.props;
+const [user, domain] = profile.email.split('@');
+---
+<span class="copy-email group/copy relative inline-flex flex-wrap items-center gap-x-4 gap-y-2" data-user={user} data-domain={domain}>
+  {variant === 'button' ? (
+    <button type="button" data-copy class:list={['btn btn-ghost', className]} title="Copy my email">
+      <span class="group-data-copied/copy:hidden">{label}</span>
+      <span class="hidden items-center gap-1.5 group-data-copied/copy:inline-flex">
+        <span class="size-1.5 rounded-full bg-pop" aria-hidden="true"></span>email copied
+      </span>
+    </button>
+  ) : (
+    <>
+      <button type="button" data-copy class:list={['cursor-pointer text-left', className]} title="Click to copy">
+        <span data-address>{user}<span class="email-at"></span>{domain}</span>
+      </button>
+      <span
+        class="pointer-events-none inline-flex scale-90 items-center gap-1.5 rounded-full bg-brand px-3 py-1 text-sm text-on-brand opacity-0 transition duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-data-copied/copy:scale-100 group-data-copied/copy:opacity-100"
+        aria-hidden="true"
+      >
+        <span class="size-1.5 rounded-full bg-pop"></span>copied
+      </span>
+      <a data-mailto hidden class:list={['basis-full text-sm underline underline-offset-4', hintClass]}>or open in mail app</a>
+    </>
+  )}
+  <span class="sr-only" aria-live="polite" data-status></span>
+</span>
+
+<script>
+  // Older copy method, for when the Clipboard API is unavailable or refused
+  const legacyCopy = (text: string) => {
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+    document.body.append(area);
+    area.select();
+    const ok = document.execCommand('copy');
+    area.remove();
+    return ok;
+  };
+
+  const copy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return legacyCopy(text);
+    }
+  };
+
+  document.querySelectorAll<HTMLElement>('.copy-email').forEach((root) => {
+    const email = `${root.dataset.user}@${root.dataset.domain}`;
+    const status = root.querySelector('[data-status]');
+    const mailto = root.querySelector<HTMLAnchorElement>('[data-mailto]');
+    if (mailto) {
+      // Shown only once there's a real address to link to
+      mailto.href = `mailto:${email}`;
+      mailto.hidden = false;
+    }
+    // Real text once JS runs, so selecting and copying by hand includes the "@"
+    const address = root.querySelector('[data-address]');
+    if (address) address.textContent = email;
+
+    let timer = 0;
+    root.querySelector('[data-copy]')?.addEventListener('click', async () => {
+      if (!(await copy(email))) {
+        // Copying isn't possible at all: open the mail app instead
+        window.location.href = `mailto:${email}`;
+        return;
+      }
+      root.setAttribute('data-copied', '');
+      if (status) status.textContent = 'Email copied to clipboard';
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        root.removeAttribute('data-copied');
+        if (status) status.textContent = '';
+      }, 2200);
+    });
+  });
+</script>

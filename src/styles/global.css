@@ -1,1 +1,232 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Registered so the theme reveal radius can be animated */
+@property --reveal {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Palette: three hues (chocolate, burgundy, baby blue); higher number = darker */
+  --color-chocolate-50: #f8f4f0;
+  --color-chocolate-100: #ede3d8;
+  --color-chocolate-200: #ddd0c2;
+  --color-chocolate-400: #b3a196;
+  --color-chocolate-500: #8f705b;
+  --color-chocolate-600: #7a6152;
+  --color-chocolate-800: #3b2a22;
+  --color-chocolate-900: #30241f;
+  --color-chocolate-925: #271d19;
+  --color-chocolate-950: #1d1512;
+
+  --color-burgundy-500: #a02c3f;
+  --color-burgundy-600: #8a2435;
+  --color-burgundy-700: #7a1f2e;
+  --color-burgundy-800: #5e1622;
+
+  --color-baby-100: #dde7ee;
+  --color-baby-400: #9cc7f0;
+  --color-baby-600: #5b8fc4;
+
+  /* Roles: components use these, not the raw palette */
+  --color-paper: var(--color-chocolate-100);
+  --color-card: var(--color-chocolate-50);
+  --color-ink: var(--color-chocolate-800);
+  --color-muted: var(--color-chocolate-600);
+  --color-line: var(--color-chocolate-200);
+  /* accent = small marks and text (dots, labels, links); brand = solid fills (buttons, active nav) */
+  --color-accent: var(--color-burgundy-700);
+  --color-brand: var(--color-burgundy-700);
+  --color-brand-strong: var(--color-burgundy-800);
+  --color-on-brand: var(--color-chocolate-50);
+  /* Soft fills: chips, hovers, small pills */
+  --color-surface: var(--color-baby-100);
+  /* Bright baby blue, only for small details */
+  --color-pop: var(--color-baby-400);
+  /* Featured tiles (project, contact): a milk chocolate tile on the latte page */
+  --color-feature: var(--color-chocolate-500);
+  --color-on-feature: var(--color-chocolate-50);
+  --color-feature-accent: var(--color-chocolate-50);
+}
+
+/* Dark theme: chocolate, burgundy fills and baby blue accents. Set by the theme script in BaseLayout. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-paper: var(--color-chocolate-950);
+  --color-card: var(--color-chocolate-925);
+  --color-ink: var(--color-chocolate-50);
+  --color-muted: var(--color-chocolate-400);
+  --color-line: var(--color-chocolate-800);
+  --color-accent: var(--color-baby-400);
+  --color-brand: var(--color-burgundy-600);
+  --color-brand-strong: var(--color-burgundy-500);
+  --color-surface: var(--color-chocolate-900);
+  --color-pop: var(--color-baby-400);
+  --color-feature: var(--color-chocolate-900);
+  --color-on-feature: var(--color-chocolate-50);
+  --color-feature-accent: var(--color-baby-400);
+  --glow: rgb(160 44 63 / 0.18);
+  --marker: color-mix(in srgb, var(--color-pop) 30%, transparent);
+  --grain-blend: soft-light;
+  --grain-opacity: 0.12;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    interpolate-size: allow-keywords;
+    --glow: rgb(122 31 46 / 0.1);
+    --marker: var(--color-pop);
+    --grain-blend: multiply;
+    --grain-opacity: 0.07;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Theme switch: Nav.astro grows --reveal, the new theme spreads as a soft-edged circle */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-new(root) {
+    /* A wide, eased falloff so the new theme dissolves in rather than wiping */
+    mask-image: radial-gradient(
+      circle at var(--reveal-x, 50%) var(--reveal-y, 50%),
+      #000 calc(var(--reveal) - var(--reveal-feather, 400px)),
+      rgb(0 0 0 / 0.85) calc(var(--reveal) - var(--reveal-feather, 400px) * 0.75),
+      rgb(0 0 0 / 0.5) calc(var(--reveal) - var(--reveal-feather, 400px) * 0.5),
+      rgb(0 0 0 / 0.15) calc(var(--reveal) - var(--reveal-feather, 400px) * 0.25),
+      transparent var(--reveal)
+    );
+  }
+
+  ::selection {
+    background-color: var(--color-pop);
+    color: var(--color-chocolate-800);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Paper grain over the whole page */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: var(--grain-blend);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex cursor-pointer items-center gap-2 rounded-full border border-ink px-5 py-2.5 text-sm font-medium transition duration-200 select-none;
+  }
+
+  .btn-primary {
+    @apply border-brand bg-brand text-on-brand;
+    box-shadow: 3px 3px 0 var(--color-pop);
+  }
+
+  .btn-primary:hover {
+    @apply border-brand-strong bg-brand-strong;
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--color-pop);
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-ink hover:bg-surface;
+  }
+
+  .chip {
+    @apply inline-block rounded-full bg-surface px-3 py-1 text-sm text-ink/85 transition duration-200;
+  }
+
+  .chip:hover {
+    transform: rotate(-3deg) scale(1.05);
+  }
+
+  .tile {
+    @apply rounded-3xl border border-line bg-card/70 p-6 transition duration-300 sm:p-7;
+  }
+
+  .tile-label {
+    @apply text-sm text-muted;
+  }
+
+  /* Experience rows: smooth open/close where ::details-content is supported */
+  .row::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size 0.35s ease,
+      content-visibility 0.35s allow-discrete;
+  }
+
+  .row[open]::details-content {
+    block-size: auto;
+  }
+
+  /* The "@" of the email lives in CSS so the address never appears whole in the HTML */
+  .email-at::before {
+    content: "@";
+  }
+
+  /* Highlighter stroke behind a word */
+  .marker {
+    background: linear-gradient(transparent 62%, var(--marker) 62%, var(--marker) 92%, transparent 92%);
+    padding-inline: 0.1em;
+  }
+
+  /* Cursor glow (MouseLight.astro): position comes from --glow-x / --glow-y */
+  .mouse-light {
+    background: radial-gradient(circle at var(--glow-x) var(--glow-y), var(--glow) 0%, transparent 400px);
+  }
+}
+
+/* Gentle fade-in on scroll; content stays visible if JS is off */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
