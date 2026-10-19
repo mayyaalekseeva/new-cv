@@ -73,7 +73,7 @@ export const stats = [
   { value: '2', label: 'coffee businesses launched' },
 ];
 
-// Life before frontend
+// Life before tech
 export const coffee = {
   roles: [
     { title: 'Coffee consultant', detail: 'menus, equipment and launch plans for other cafés' },
@@ -120,6 +120,13 @@ export const skills = [
   { group: 'Testing & tooling', items: ['Jest', 'React Testing Library', 'Storybook', 'Vite', 'Nx', 'Lighthouse', 'Git'] },
   { group: 'AI-assisted', items: ['Cursor', 'Claude', 'LLM APIs'] },
 ];
+
+// Non-technical skills, shown apart from the tech stack in the toolbox
+export const beyondCode = {
+  group: 'beyond code',
+  note: 'from running a coffee business',
+  items: ['team management', 'systems thinking', 'process design'],
+};
 
 export const education = [
   { place: 'HSE University', detail: 'BSc, Science, Technology and Innovation Management and Policy', years: '2008 — 2012' },
