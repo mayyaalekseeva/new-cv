@@ -1,6 +1,6 @@
 # maiia-alexeeva.space
 
-Personal site and CV of Maiia Alekseeva, frontend engineer in Lisbon.
+Personal site and CV of Maiia Alekseeva, product engineer in Lisbon.
 
 Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com) v4. Static output, no UI framework, a few small scripts for the interactive bits. Deployed on Vercel.
 

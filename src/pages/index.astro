@@ -32,43 +32,22 @@ const [degree, ...courses] = education;
 
       <div class="mt-10 grid gap-8 lg:grid-cols-12 lg:items-end">
         <p class="reveal text-xl leading-snug text-balance text-ink/80 sm:text-2xl lg:col-span-7">
-          frontend engineer with 5+ years of turning complex, data-heavy apps into interfaces people
-          <span class="marker text-accent">actually enjoy</span>. react, typescript &amp; a lot of coffee.
+          product engineer with 5+ years of turning complex, data-heavy apps into interfaces people
+          <span class="marker text-accent">actually enjoy</span> using.
         </p>
         <div class="reveal flex flex-wrap items-center gap-3 lg:col-span-5 lg:justify-end">
           <CvMenu />
           <CopyEmail variant="button" />
-          <SocialLinks />
+          <span class="flex">
+            <SocialLinks />
+          </span>
         </div>
       </div>
     </header>
 
     <section id="about" class="scroll-mt-24" aria-label="At a glance">
       <div class="grid gap-3 sm:gap-4 md:grid-cols-6 lg:grid-cols-12">
-        <a
-          id="projects"
-          href={featured.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="reveal tile group flex min-h-[22rem] flex-col justify-between !border-feature !bg-feature text-on-feature hover:-translate-y-1 md:col-span-6 lg:col-span-7 lg:row-span-2"
-        >
-          <div class="flex items-start justify-between gap-4">
-            <p class="inline-flex items-center gap-2 rounded-full bg-brand px-3 py-1 text-sm text-on-brand">
-              <span class="size-1.5 rounded-full bg-on-brand/80" aria-hidden="true"></span>
-              {featured.tag}
-            </p>
-            <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-on-feature text-lg text-baby-600 transition duration-300 group-hover:rotate-45 group-hover:bg-brand group-hover:text-on-brand" aria-hidden="true">↗</span>
-          </div>
-          <div>
-            <h2 class="text-4xl font-semibold tracking-tight sm:text-5xl">{featured.name}</h2>
-            <p class="mt-4 max-w-xl leading-relaxed text-on-feature/90">{featured.description}</p>
-            <ul class="mt-6 flex flex-wrap gap-2">
-              {featured.stack.map((item) => <li class="rounded-full bg-on-feature/12 px-3 py-1 text-sm text-on-feature/90">{item}</li>)}
-            </ul>
-          </div>
-        </a>
-
-        <div class="reveal tile flex flex-col justify-between gap-6 md:col-span-3 lg:col-span-5">
+        <div class="reveal tile flex flex-col justify-between gap-6 md:col-span-3 lg:col-span-6">
           <p class="tile-label">based in</p>
           <div>
             <p class="text-3xl font-semibold tracking-tight">{profile.location}</p>
@@ -79,7 +58,7 @@ const [degree, ...courses] = education;
           </div>
         </div>
 
-        <div class="reveal tile flex flex-col justify-between gap-6 md:col-span-3 lg:col-span-5">
+        <div class="reveal tile flex flex-col justify-between gap-6 md:col-span-3 lg:col-span-6">
           <p class="tile-label">in numbers</p>
           <dl class="grid grid-cols-3 gap-4">
             {stats.map((stat) => (
@@ -157,9 +136,32 @@ const [degree, ...courses] = education;
           <span class="text-2xl font-semibold tracking-tight text-ink tabular-nums sm:text-3xl" data-total-duration>
             {formatMonths(totalMonths(experience))}
           </span>
-          in frontend overall
+          in tech overall
         </p>
       </div>
+
+      <a
+        id="projects"
+        href={featured.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="reveal tile group mb-10 flex min-h-[22rem] flex-col justify-between !border-feature !bg-feature text-on-feature hover:-translate-y-1"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <p class="inline-flex items-center gap-2 rounded-full bg-brand px-3 py-1 text-sm text-on-brand">
+            <span class="size-1.5 rounded-full bg-on-brand/80" aria-hidden="true"></span>
+            {featured.tag}
+          </p>
+          <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-on-feature text-lg text-baby-600 transition duration-300 group-hover:rotate-45 group-hover:bg-brand group-hover:text-on-brand" aria-hidden="true">↗</span>
+        </div>
+        <div>
+          <h3 class="text-4xl font-semibold tracking-tight sm:text-5xl">{featured.name}</h3>
+          <p class="mt-4 max-w-xl leading-relaxed text-on-feature/90">{featured.description}</p>
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {featured.stack.map((item) => <li class="rounded-full bg-on-feature/12 px-3 py-1 text-sm text-on-feature/90">{item}</li>)}
+          </ul>
+        </div>
+      </a>
 
       <div class="border-b border-line">
         {experience.map((job, i) => (
@@ -206,13 +208,13 @@ const [degree, ...courses] = education;
       <div class="grid gap-3 sm:gap-4 lg:grid-cols-12">
         <div class="reveal tile flex flex-col gap-5 lg:col-span-5">
           <p class="text-lg leading-relaxed text-ink/85">
-            Before frontend, I spent <span class="marker font-medium text-accent">10+ years in specialty coffee</span>,
+            Before tech, I spent <span class="marker font-medium text-accent">10+ years in specialty coffee</span>,
             from behind the bar to founding my own coffee shop and launching a roastery. Running a business taught me
             to think strategically: who it’s for, what it costs and how it pays off. Coffee taught me to obsess over the
             details people feel but rarely notice.
           </p>
           <p class="text-lg leading-relaxed text-ink/85">
-            I’d dreamed of living in <span class="marker">Lisbon</span> for years, and switching to frontend was how I
+            I’d dreamed of living in <span class="marker">Lisbon</span> for years, and switching to tech was how I
             made it happen.
           </p>
           <ul class="mt-3 space-y-4 border-t border-line pt-6">

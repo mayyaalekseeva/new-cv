@@ -73,7 +73,7 @@ export const stats = [
   { value: '2', label: 'coffee businesses launched' },
 ];
 
-// Life before frontend
+// Life before tech
 export const coffee = {
   roles: [
     { title: 'Coffee consultant', detail: 'menus, equipment and launch plans for other cafés' },

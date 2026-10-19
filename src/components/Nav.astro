@@ -8,17 +8,17 @@ const links = [
 ---
 <nav aria-label="Main" class="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
   <div class="flex max-w-full items-center gap-0.5 rounded-full border border-ink/10 bg-paper/80 p-1 shadow-sm backdrop-blur-md">
-    <a href="#top" class="shrink-0 rounded-full px-3 py-1.5 text-base font-semibold text-accent" aria-label="Back to top">m.</a>
+    <a href="#top" class="shrink-0 rounded-full px-2 py-1.5 text-base font-semibold text-accent sm:px-3" aria-label="Back to top">m.</a>
     {links.map((link) => (
       <a
         href={`#${link.id}`}
         data-nav={link.id}
-        class="shrink-0 rounded-full px-2.5 py-1.5 text-sm sm:px-3 whitespace-nowrap text-ink/70 transition hover:bg-surface hover:text-ink data-active:bg-brand data-active:text-on-brand"
+        class="shrink-0 rounded-full px-2 py-1.5 text-sm whitespace-nowrap text-ink/70 min-[400px]:px-2.5 sm:px-3 transition hover:bg-surface hover:text-ink data-active:bg-brand data-active:text-on-brand"
       >
         {link.label}
       </a>
     ))}
-    <span class="mx-1 h-4 w-px shrink-0 bg-line" aria-hidden="true"></span>
+    <span class="mx-1 hidden h-4 w-px shrink-0 bg-line sm:block" aria-hidden="true"></span>
     {/* Lingering on it slowly reveals a label (until the visitor has used it once); a click dissolves into the new theme */}
     <button
       id="theme-toggle"
