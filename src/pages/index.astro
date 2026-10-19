@@ -4,7 +4,7 @@ import Nav from '../components/Nav.astro';
 import CvMenu from '../components/CvMenu.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import CopyEmail from '../components/CopyEmail.astro';
-import { profile, experience, stats, coffee, projects, skills, education, languages } from '../data/cv';
+import { profile, experience, stats, coffee, projects, skills, beyondCode, education, languages } from '../data/cv';
 import { formatMonths, monthsIn, totalMonths } from '../lib/duration';
 
 const [featured] = projects;
@@ -82,6 +82,15 @@ const [degree, ...courses] = education;
               </div>
             ))}
           </dl>
+          <div class="mt-6 border-t border-line pt-5">
+            <p class="mb-2 text-sm">
+              <span class="font-medium">{beyondCode.group}</span>
+              <span class="text-muted"> · {beyondCode.note}</span>
+            </p>
+            <div class="flex flex-wrap gap-1.5">
+              {beyondCode.items.map((item) => <span class="chip chip-tint">{item}</span>)}
+            </div>
+          </div>
         </div>
 
         <div class="reveal tile flex flex-col justify-between gap-8 md:col-span-6 lg:col-span-5">

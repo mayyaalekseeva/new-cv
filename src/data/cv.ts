@@ -121,6 +121,13 @@ export const skills = [
   { group: 'AI-assisted', items: ['Cursor', 'Claude', 'LLM APIs'] },
 ];
 
+// Non-technical skills, shown apart from the tech stack in the toolbox
+export const beyondCode = {
+  group: 'beyond code',
+  note: 'from running a coffee business',
+  items: ['team management', 'systems thinking', 'process design'],
+};
+
 export const education = [
   { place: 'HSE University', detail: 'BSc, Science, Technology and Innovation Management and Policy', years: '2008 — 2012' },
   { place: 'Orion Innovation Learning Center', detail: 'Frontend development', years: '2020 — 2021' },

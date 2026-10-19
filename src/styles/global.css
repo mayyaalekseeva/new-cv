@@ -165,6 +165,11 @@
     transform: rotate(-3deg) scale(1.05);
   }
 
+  /* Burgundy variant for non-technical skills ("beyond code") */
+  .chip-tint {
+    @apply bg-brand/10 text-brand dark:bg-brand/35 dark:text-ink;
+  }
+
   .tile {
     @apply rounded-3xl border border-line bg-card/70 p-6 transition duration-300 sm:p-7;
   }
