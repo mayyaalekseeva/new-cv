@@ -16,15 +16,18 @@ const [degree, ...courses] = education;
 
   <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <header id="top" class="pt-32 pb-14 sm:pt-40 sm:pb-20">
-      {profile.openToWork && (
-        <p class="reveal mb-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-sm text-muted">
-          <span class="relative flex size-2">
-            <span class="absolute inline-flex size-full animate-ping rounded-full bg-pop"></span>
-            <span class="relative inline-flex size-2 rounded-full bg-pop"></span>
-          </span>
-          open to new roles
-        </p>
-      )}
+      <div class="reveal mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+        {profile.openToWork && (
+          <p class="inline-flex items-center gap-2 rounded-full border border-line px-3 py-1">
+            <span class="relative flex size-2">
+              <span class="absolute inline-flex size-full animate-ping rounded-full bg-pop"></span>
+              <span class="relative inline-flex size-2 rounded-full bg-pop"></span>
+            </span>
+            open to new roles
+          </p>
+        )}
+        <p>{profile.location} · remote, European time zones</p>
+      </div>
 
       <h1 class="reveal text-[clamp(3.75rem,14vw,10.5rem)] leading-[0.88] font-semibold tracking-[-0.055em]">
         hi, i’m maiia<span class="text-accent">.</span>
@@ -45,7 +48,118 @@ const [degree, ...courses] = education;
       </div>
     </header>
 
-    <section id="about" class="scroll-mt-24" aria-label="At a glance">
+    <section id="work" class="scroll-mt-24">
+      <div class="reveal mb-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+        <h2 class="text-4xl font-semibold tracking-tight sm:text-6xl">
+          where i’ve worked<span class="text-accent">.</span>
+        </h2>
+        <p class="text-muted sm:pb-2">
+          <span class="text-2xl font-semibold tracking-tight text-ink tabular-nums sm:text-3xl" data-total-duration>
+            {formatMonths(totalMonths(experience))}
+          </span>
+          in tech overall
+        </p>
+      </div>
+
+      <div class="border-b border-line">
+        {experience.map((job, i) => (
+          <details class="row reveal group border-t border-line" open={i === 0}>
+            <summary class="grid cursor-pointer list-none grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 py-6 [&::-webkit-details-marker]:hidden md:grid-cols-[11rem_1fr_auto] lg:grid-cols-[11rem_1fr_1fr_auto]">
+              <span class="col-span-2 text-sm text-muted tabular-nums md:col-span-1">
+                {job.period}
+                <span class="block text-ink/80" data-duration data-start={job.start} data-end={job.end}>
+                  {formatMonths(monthsIn(job))}
+                </span>
+              </span>
+              <span>
+                <span class="block text-2xl font-semibold tracking-tight transition group-hover:text-accent sm:text-3xl">{job.company}</span>
+                <span class="text-sm text-muted">
+                  {job.role}
+                  {job.cases && <span class="text-accent"> · {job.cases.length} case studies</span>}
+                </span>
+              </span>
+              <span class="hidden text-sm text-muted lg:block">{job.stack.join(' · ')}</span>
+              <span class="inline-flex size-10 items-center justify-center rounded-full border border-line text-ink/70 transition duration-300 group-open:border-accent group-open:text-accent group-hover:border-accent" aria-hidden="true">
+                <svg class="size-4 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </summary>
+            <div class="pb-8 md:pl-[calc(11rem+1.5rem)]">
+              <ul class="max-w-2xl space-y-2.5 leading-relaxed text-ink/85">
+                {job.points.map((point) => (
+                  <li class="flex gap-3">
+                    <span class="mt-[0.8em] h-px w-3 shrink-0 bg-accent" aria-hidden="true"></span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="mt-4 text-sm text-muted lg:hidden">{job.stack.join(' · ')}</p>
+
+              {job.cases && (
+                <div class="mt-8">
+                  <p class="tile-label mb-4">case studies</p>
+                  <div class="grid gap-3 sm:grid-cols-2">
+                    {job.cases.map((item, n) => (
+                      <article class="flex flex-col rounded-2xl border border-line bg-card/70 p-5 transition duration-300 hover:-translate-y-0.5 hover:border-ink/20">
+                        <p class="text-xs text-accent tabular-nums">case {String(n + 1).padStart(2, '0')}</p>
+                        <h3 class="mt-1 text-lg leading-snug font-semibold tracking-tight">{item.title}</h3>
+                        <dl class="mt-4 space-y-3 text-sm leading-relaxed">
+                          <div>
+                            <dt class="text-muted">problem</dt>
+                            <dd class="text-ink/85">{item.problem}</dd>
+                          </div>
+                          <div>
+                            <dt class="text-muted">what i did</dt>
+                            <dd class="text-ink/85">{item.did}</dd>
+                          </div>
+                          <div class="border-l-2 border-accent pl-3">
+                            <dt class="text-muted">result</dt>
+                            <dd class="font-medium text-ink">{item.result}</dd>
+                          </div>
+                        </dl>
+                        <ul class="mt-auto flex flex-wrap gap-1.5 pt-5">
+                          {item.stack.map((tech) => <li class="chip !px-2.5 !py-0.5 text-xs">{tech}</li>)}
+                        </ul>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <a
+        id="projects"
+        href={featured.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="reveal tile group mt-10 flex min-h-[22rem] flex-col justify-between !border-feature !bg-feature text-on-feature hover:-translate-y-1"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <p class="inline-flex items-center gap-2 rounded-full bg-brand px-3 py-1 text-sm text-on-brand">
+            <span class="size-1.5 rounded-full bg-on-brand/80" aria-hidden="true"></span>
+            {featured.tag}
+          </p>
+          <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-on-feature text-lg text-baby-600 transition duration-300 group-hover:rotate-45 group-hover:bg-brand group-hover:text-on-brand" aria-hidden="true">↗</span>
+        </div>
+        <div>
+          <h3 class="text-4xl font-semibold tracking-tight sm:text-5xl">{featured.name}</h3>
+          <p class="mt-4 max-w-xl leading-relaxed text-on-feature/90">{featured.description}</p>
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {featured.stack.map((item) => <li class="rounded-full bg-on-feature/12 px-3 py-1 text-sm text-on-feature/90">{item}</li>)}
+          </ul>
+        </div>
+      </a>
+    </section>
+
+    <section id="about" class="scroll-mt-24 pt-24 sm:pt-32">
+      <h2 class="reveal mb-10 text-4xl font-semibold tracking-tight sm:text-6xl">
+        more about me<span class="text-accent">.</span>
+      </h2>
+
       <div class="grid gap-3 sm:gap-4 md:grid-cols-6 lg:grid-cols-12">
         <div class="reveal tile flex flex-col justify-between gap-6 md:col-span-3 lg:col-span-6">
           <p class="tile-label">based in</p>
@@ -133,79 +247,6 @@ const [degree, ...courses] = education;
             </ul>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section id="work" class="scroll-mt-24 pt-24 sm:pt-32">
-      <div class="reveal mb-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
-        <h2 class="text-4xl font-semibold tracking-tight sm:text-6xl">
-          where i’ve worked<span class="text-accent">.</span>
-        </h2>
-        <p class="text-muted sm:pb-2">
-          <span class="text-2xl font-semibold tracking-tight text-ink tabular-nums sm:text-3xl" data-total-duration>
-            {formatMonths(totalMonths(experience))}
-          </span>
-          in tech overall
-        </p>
-      </div>
-
-      <a
-        id="projects"
-        href={featured.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="reveal tile group mb-10 flex min-h-[22rem] flex-col justify-between !border-feature !bg-feature text-on-feature hover:-translate-y-1"
-      >
-        <div class="flex items-start justify-between gap-4">
-          <p class="inline-flex items-center gap-2 rounded-full bg-brand px-3 py-1 text-sm text-on-brand">
-            <span class="size-1.5 rounded-full bg-on-brand/80" aria-hidden="true"></span>
-            {featured.tag}
-          </p>
-          <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-on-feature text-lg text-baby-600 transition duration-300 group-hover:rotate-45 group-hover:bg-brand group-hover:text-on-brand" aria-hidden="true">↗</span>
-        </div>
-        <div>
-          <h3 class="text-4xl font-semibold tracking-tight sm:text-5xl">{featured.name}</h3>
-          <p class="mt-4 max-w-xl leading-relaxed text-on-feature/90">{featured.description}</p>
-          <ul class="mt-6 flex flex-wrap gap-2">
-            {featured.stack.map((item) => <li class="rounded-full bg-on-feature/12 px-3 py-1 text-sm text-on-feature/90">{item}</li>)}
-          </ul>
-        </div>
-      </a>
-
-      <div class="border-b border-line">
-        {experience.map((job, i) => (
-          <details class="row reveal group border-t border-line" open={i === 0}>
-            <summary class="grid cursor-pointer list-none grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 py-6 [&::-webkit-details-marker]:hidden md:grid-cols-[11rem_1fr_auto] lg:grid-cols-[11rem_1fr_1fr_auto]">
-              <span class="col-span-2 text-sm text-muted tabular-nums md:col-span-1">
-                {job.period}
-                <span class="block text-ink/80" data-duration data-start={job.start} data-end={job.end}>
-                  {formatMonths(monthsIn(job))}
-                </span>
-              </span>
-              <span>
-                <span class="block text-2xl font-semibold tracking-tight transition group-hover:text-accent sm:text-3xl">{job.company}</span>
-                <span class="text-sm text-muted">{job.role}</span>
-              </span>
-              <span class="hidden text-sm text-muted lg:block">{job.stack.join(' · ')}</span>
-              <span class="inline-flex size-10 items-center justify-center rounded-full border border-line text-ink/70 transition duration-300 group-open:border-accent group-open:text-accent group-hover:border-accent" aria-hidden="true">
-                <svg class="size-4 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 16 16" fill="none">
-                  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-            </summary>
-            <div class="pb-8 md:pl-[calc(11rem+1.5rem)]">
-              <ul class="max-w-2xl space-y-2.5 leading-relaxed text-ink/85">
-                {job.points.map((point) => (
-                  <li class="flex gap-3">
-                    <span class="mt-[0.8em] h-px w-3 shrink-0 bg-accent" aria-hidden="true"></span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-              <p class="mt-4 text-sm text-muted lg:hidden">{job.stack.join(' · ')}</p>
-            </div>
-          </details>
-        ))}
       </div>
     </section>
 

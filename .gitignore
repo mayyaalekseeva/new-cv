@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# private CV notes (not for publishing)
+experience.md
+Claude outputs/

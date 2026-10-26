@@ -7,8 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check",
-    "cv": "node scripts/build-cv.mjs"
+    "check": "astro check"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
