@@ -1,9 +1,17 @@
 export const profile = {
   name: 'Maiia Alekseeva',
+  firstName: 'Maiia',
+  lastName: 'Alekseeva',
+  title: 'Product Engineer',
+  website: 'https://maiia.work',
   location: 'Lisbon, Portugal',
   email: 'maaya.alexeeva@gmail.com',
   github: 'https://github.com/mayyaalekseeva',
   linkedin: 'https://www.linkedin.com/in/maiia-alekseeva',
+  // Opens a WhatsApp chat by username, no phone number shared
+  whatsapp: 'https://wa.me/maiia.alekseeva',
+  // Square headshot used on /hi and inside the downloadable contact card
+  photo: '/maiia.jpg',
   // Shows the "open to new roles" badge in the hero. Set to false to hide it.
   openToWork: true,
   cv: [

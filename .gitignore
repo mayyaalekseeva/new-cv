@@ -26,3 +26,6 @@ pnpm-debug.log*
 # private CV notes (not for publishing)
 experience.md
 Claude outputs/
+
+# generated QR code and lock screen (npm run qr)
+qr/
