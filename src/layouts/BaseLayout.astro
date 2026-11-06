@@ -5,9 +5,12 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  // Keep secondary pages (like /hi) out of search results
+  noindex?: boolean;
 }
 
 const {
+  noindex = false,
   title = 'Maiia Alekseeva — Product Engineer',
   description = 'Product engineer in Lisbon: 5+ years building complex, data-heavy React and TypeScript apps, with full-stack work in Node.js, GraphQL and PostgreSQL.',
 } = Astro.props;
@@ -23,6 +26,7 @@ const ogImage = new URL('/og.png', Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {/* Browser UI colour; the theme scripts swap between the paper colours below */}
     <meta name="theme-color" id="theme-color" content="#ede3d8" data-light="#ede3d8" data-dark="#1d1512" />

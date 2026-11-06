@@ -7,7 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "qr": "node scripts/make-qr.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "qrcode": "^1.5.4",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.3"
   }
