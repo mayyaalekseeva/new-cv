@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/cv",
+      "destination": "/Maiia_Alekseeva_Product_Engineer_CV.pdf",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/maiia-alekseeva.vcf",
